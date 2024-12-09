@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import jsPDF from 'jspdf';
+import'jspdf-autotable'
+import { Button } from "@mui/material"
 
 export default function Home() {
 
@@ -27,8 +30,31 @@ alert("Algo deu errado!!")
   }
 }
 
+
+const exportPDF = () => {
+  const doc = new jsPDF();
+
+  const table = usuarios.map(usuario => [
+    usuario.nome,
+    usuario.email
+
+  ]);
+  doc.text("Lista de usuarios", 10, 10);
+  doc.autoTable({
+  head:[["Nome", "E-mail"]],
+  body: table
+  });
+
+  doc.save("Arquivo-tabela-if")
+}
+
+
   return (
+
     <table>
+      <>
+    <Button variant="contained" onClick={()=> exportPDF()}>Gerar PDF</Button>
+  </>
       <tr>
         <td>Nome</td>
         <td>E-mail</td>

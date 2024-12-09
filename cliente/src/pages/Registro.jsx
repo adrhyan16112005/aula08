@@ -1,5 +1,8 @@
 import { useState } from "react";
+import jsPDF from 'jspdf';
+import'jspdf-autotable'
 import { useNavigate } from "react-router-dom"
+import autoTable from "jspdf-autotable";
 
 
 export default function Registrar() {
