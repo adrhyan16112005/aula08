@@ -5,61 +5,61 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 
-let usuarios = [];
+let arranjos = [];
 
-app.post('/usuarios', (req, res) => {
+app.post('/arranjos', (req, res) => {
+    const { nome,preço,tipodeflores,dimensão,datadeentrega,frete,endereço} = req.body;
+    
+    if (!nome || !preço || !tipodeflores || !dimensão) {
+        return res.status(400).json({ erro: 'N' });
+    }
+
+    const novoArranjo = { id: arranjos.length + 1, nome, email };
+    arranjos.push(novoArranjo);
+    
+    res.status(201).json(novoArranjo);
+});
+
+app.get('/arranjos', (req, res) => {
+    res.status(200).json(arranjos);
+});
+
+app.get('/arranjos/:id', (req, res) => {
+    const { id } = req.params;
+    const arranjos = arranjos.find(u => u.id === parseInt(id));
+    
+    if (!arranjos) {
+        return res.status(404).json({ erro: 'Arranjo não encontrado' });
+    }
+    
+    res.status(200).json(arranjos);
+});
+
+app.put('/arranjos/:id', (req, res) => {
+    const { id } = req.params;
     const { nome, email } = req.body;
     
-    if (!nome || !email) {
-        return res.status(400).json({ erro: 'Nome e email são obrigatórios' });
-    }
-
-    const novoUsuario = { id: usuarios.length + 1, nome, email };
-    usuarios.push(novoUsuario);
-    
-    res.status(201).json(novoUsuario);
-});
-
-app.get('/usuarios', (req, res) => {
-    res.status(200).json(usuarios);
-});
-
-app.get('/usuarios/:id', (req, res) => {
-    const { id } = req.params;
-    const usuario = usuarios.find(u => u.id === parseInt(id));
+    const arranjos = arranjos.find(u => u.id === parseInt(id));
     
     if (!usuario) {
-        return res.status(404).json({ erro: 'Usuário não encontrado' });
+        return res.status(404).json({ erro: 'Arranjo não encontrado' });
     }
     
-    res.status(200).json(usuario);
+    arranjos.nome = nome || arranjos.nome;
+    arranjos.email = email || arranjos.email;
+    
+    res.status(200).json(arranjos);
 });
 
-app.put('/usuarios/:id', (req, res) => {
+app.delete('/arranjos/:id', (req, res) => {
     const { id } = req.params;
-    const { nome, email } = req.body;
-    
-    const usuario = usuarios.find(u => u.id === parseInt(id));
-    
-    if (!usuario) {
-        return res.status(404).json({ erro: 'Usuário não encontrado' });
-    }
-    
-    usuario.nome = nome || usuario.nome;
-    usuario.email = email || usuario.email;
-    
-    res.status(200).json(usuario);
-});
-
-app.delete('/usuarios/:id', (req, res) => {
-    const { id } = req.params;
-    const index = usuarios.findIndex(u => u.id === parseInt(id));
+    const index = arranjos.findIndex(u => u.id === parseInt(id));
     
     if (index === -1) {
-        return res.status(404).json({ erro: 'Usuário não encontrado' });
+        return res.status(404).json({ erro: 'Arranjo não encontrado' });
     }
     
-    usuarios.splice(index, 1);
+    arranjos.splice(index, 1);
     res.status(204).send();
 });
 

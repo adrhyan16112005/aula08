@@ -59,13 +59,20 @@ const exportPDF = () => {
         <td>Nome</td>
         <td>E-mail</td>
       </tr>
+      <body>
       {usuarios.map((usuario) =>
         <tr key={usuario.id}>
           <td>{usuario.nome}</td>
           <td>{usuario.email}</td>
-          <td><button onClick={() => deletar(usuario.id)} >Remover</button></td>
+          <td>
+            <button onClick={() => deletar(usuario.id)} >Remover</button>
+          <Link to={'/alterar/' + usuario.id}>
+            <button>Alterar</button>
+          </Link>
+          </td>
         </tr>
       )}
+      </body>
     </table>
   );
 }
