@@ -42,6 +42,7 @@ let arranjos = [
 
 ];
 
+// Criar novo arranjo
 app.post('/arranjos', (req, res) => {
     const { nome, tipo, preco, dataCriacao, disponibilidade, descricao } = req.body;
     
@@ -56,10 +57,12 @@ app.post('/arranjos', (req, res) => {
     res.status(201).json(novoArranjo);
 });
 
+// Listar todos os arranjos
 app.get('/arranjos', (req, res) => {
     res.status(200).json(arranjos);
 });
 
+// Buscar arranjo por ID
 app.get('/arranjos/:id', (req, res) => {
     const { id } = req.params;
     const arranjo = arranjos.find(u => u.id === parseInt(id));
@@ -71,6 +74,7 @@ app.get('/arranjos/:id', (req, res) => {
     res.status(200).json(arranjo);
 });
 
+// Atualizar arranjo
 app.put('/arranjos/:id', (req, res) => {
     const { id } = req.params;
     const { nome, tipo, preco, dataCriacao, disponibilidade, descricao } = req.body;
@@ -91,6 +95,7 @@ app.put('/arranjos/:id', (req, res) => {
     res.status(200).json(arranjo);
 });
 
+// Remover arranjo
 app.delete('/arranjos/:id', (req, res) => {
     const { id } = req.params;
     const index = arranjos.findIndex(u => u.id === parseInt(id));
