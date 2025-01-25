@@ -5,6 +5,10 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 
+<<<<<<< HEAD
+// Array to store flower arrangements
+let arranjos = [];
+=======
 let arranjos = [
   { id: 1, nome: "Arranjo de Rosas Vermelhas", tipo: "Rosas", preco: 100.00, dataCriacao: "2025-01-01", disponibilidade: "Sem estoque", descricao: "Arranjo com rosas vermelhas e verde que nos trás uma vibração romântica." },
   { id: 2, nome: "Arranjo de Lírios", tipo: "Lírios", preco: 69.90, dataCriacao: "2025-01-02", disponibilidade: "Em estoque", descricao: "Arranjo com lírios e flores do campo que simboliza paz e tranquilidade." },
@@ -41,9 +45,33 @@ let arranjos = [
   { id: 33, nome: "Arranjo de Azaléia Rosa", tipo: "Azaléia", preco: 70.00, dataCriacao: "2025-01-30", disponibilidade: "Em estoque", descricao: "Arranjo de azaléias rosas, simbolizando a modéstia e a beleza." }
 
 ];
+>>>>>>> 802efc23ef68680fc2e06dd378f17d14aad5dd23
 
+<<<<<<< HEAD
 // Criar novo arranjo
+=======
+// Create a new flower arrangement
+>>>>>>> b508f559a8fc945c42e55f8810c828f8b5b9c04c
 app.post('/arranjos', (req, res) => {
+<<<<<<< HEAD
+    const { nome, preco, tipodeflores, dimensao, datadeentrega, frete, endereco } = req.body;
+
+    if (!nome || !preco || !tipodeflores || !dimensao || !datadeentrega || !frete || !endereco) {
+        return res.status(400).json({ erro: 'Todos os campos são obrigatórios.' });
+    }
+
+    const novoArranjo = {
+        id: arranjos.length + 1,
+        nome,
+        preco,
+        tipodeflores,
+        dimensao,
+        datadeentrega,
+        frete,
+        endereco,
+    };
+
+=======
     const { nome, tipo, preco, dataCriacao, disponibilidade, descricao } = req.body;
     
     if (!nome || !tipo || !preco || !dataCriacao || !disponibilidade || !descricao) {
@@ -52,31 +80,70 @@ app.post('/arranjos', (req, res) => {
 
     const novoArranjo = {
         id: arranjos.length + 1, nome, tipo, preco, dataCriacao, disponibilidade, descricao };
+>>>>>>> 802efc23ef68680fc2e06dd378f17d14aad5dd23
     arranjos.push(novoArranjo);
-    
     res.status(201).json(novoArranjo);
 });
 
+<<<<<<< HEAD
 // Listar todos os arranjos
+=======
+// Get all flower arrangements
+>>>>>>> b508f559a8fc945c42e55f8810c828f8b5b9c04c
 app.get('/arranjos', (req, res) => {
     res.status(200).json(arranjos);
 });
 
+<<<<<<< HEAD
 // Buscar arranjo por ID
+=======
+// Get a single flower arrangement by ID
+>>>>>>> b508f559a8fc945c42e55f8810c828f8b5b9c04c
 app.get('/arranjos/:id', (req, res) => {
     const { id } = req.params;
+<<<<<<< HEAD
+    const arranjo = arranjos.find(a => a.id === parseInt(id));
+
+    if (!arranjo) {
+        return res.status(404).json({ erro: 'Arranjo não encontrado.' });
+    }
+
+=======
     const arranjo = arranjos.find(u => u.id === parseInt(id));
     
     if (!arranjo) {
         return res.status(404).json({ erro: 'Arranjo não encontrado' });
     }
     
+>>>>>>> 802efc23ef68680fc2e06dd378f17d14aad5dd23
     res.status(200).json(arranjo);
 });
 
+<<<<<<< HEAD
 // Atualizar arranjo
+=======
+// Update a flower arrangement by ID
+>>>>>>> b508f559a8fc945c42e55f8810c828f8b5b9c04c
 app.put('/arranjos/:id', (req, res) => {
     const { id } = req.params;
+<<<<<<< HEAD
+    const { nome, preco, tipodeflores, dimensao, datadeentrega, frete, endereco } = req.body;
+
+    const arranjo = arranjos.find(a => a.id === parseInt(id));
+
+    if (!arranjo) {
+        return res.status(404).json({ erro: 'Arranjo não encontrado.' });
+    }
+
+    // Update only provided fields
+    if (nome) arranjo.nome = nome;
+    if (preco) arranjo.preco = preco;
+    if (tipodeflores) arranjo.tipodeflores = tipodeflores;
+    if (dimensao) arranjo.dimensao = dimensao;
+    if (datadeentrega) arranjo.datadeentrega = datadeentrega;
+    if (frete) arranjo.frete = frete;
+    if (endereco) arranjo.endereco = endereco;
+=======
     const { nome, tipo, preco, dataCriacao, disponibilidade, descricao } = req.body;
     
     let arranjo = arranjos.find(u => u.id === parseInt(id));
@@ -91,23 +158,29 @@ app.put('/arranjos/:id', (req, res) => {
     arranjo.dataCriacao = dataCriacao || arranjo.dataCriacao;
     arranjo.disponibilidade = disponibilidade || arranjo.disponibilidade;
     arranjo.descricao = descricao || arranjo.descricao;
+>>>>>>> 802efc23ef68680fc2e06dd378f17d14aad5dd23
 
     res.status(200).json(arranjo);
 });
 
+<<<<<<< HEAD
 // Remover arranjo
+=======
+// Delete a flower arrangement by ID
+>>>>>>> b508f559a8fc945c42e55f8810c828f8b5b9c04c
 app.delete('/arranjos/:id', (req, res) => {
     const { id } = req.params;
-    const index = arranjos.findIndex(u => u.id === parseInt(id));
-    
+    const index = arranjos.findIndex(a => a.id === parseInt(id));
+
     if (index === -1) {
-        return res.status(404).json({ erro: 'Arranjo não encontrado' });
+        return res.status(404).json({ erro: 'Arranjo não encontrado.' });
     }
-    
+
     arranjos.splice(index, 1);
     res.status(204).send();
 });
 
+// Start the server
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');
 });
