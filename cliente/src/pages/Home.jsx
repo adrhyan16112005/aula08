@@ -1,78 +1,100 @@
 import { useEffect, useState } from "react";
-import jsPDF from 'jspdf';
-import'jspdf-autotable'
-import { Button } from "@mui/material"
+import ListaProdutos from "../components/ListaProdutos"; 
 
 export default function Home() {
-
-  const [usuarios, setUsuarios] = useState([]);
-
-  useEffect(() => {
-    const buscarUsuario = async () => {
-      try {
-        const resposta = await fetch("http://localhost:3000/usuarios");
-        const dados = await resposta.json();
-        setUsuarios(dados);
-      } catch {
-        alert('Ocorreu um erro no app!');
-      }
-    }
-    buscarUsuario();
-  }, [usuarios])
-
-const deletar = async (id) => {
-  try{
-     await fetch('http://localhost:3000/usuarios/' + id, {
-      method: 'DELETE'
-});
-  }catch{
-alert("Algo deu errado!!")
-  }
-}
-
-
-const exportPDF = () => {
-  const doc = new jsPDF();
-
-  const table = usuarios.map(usuario => [
-    usuario.nome,
-    usuario.email
-
-  ]);
-  doc.text("Lista de usuarios", 10, 10);
-  doc.autoTable({
-  head:[["Nome", "E-mail"]],
-  body: table
+  const [arranjos, setArranjos] = useState([]);
+  const [filtros, setFiltros] = useState({
+    nome: "",
+    tipo: "",
+    precoMin: "",
+    precoMax: "",
   });
 
-  doc.save("Arquivo-tabela-if")
-}
+  useEffect(() => {
+    const buscarArranjos = async () => {
+      try {
+        const resposta = await fetch('http://localhost:3000/arranjos');
+        if (resposta.ok) {
+          const dados = await resposta.json();
+          setArranjos(dados);
+        } else {
+          alert('Erro ao buscar os arranjos.');
+        }
+      } catch (err) {
+        alert('Erro de conexão com o servidor.');
+      }
+    };
+    buscarArranjos();
+  }, []);
 
+
+  const filtrarArranjos = () => {
+    return arranjos.filter((arranjo) => {
+      return (
+        (filtros.nome ? arranjo.nome.toLowerCase().includes(filtros.nome.toLowerCase()) : true) &&
+        (filtros.tipo ? arranjo.tipo.toLowerCase().includes(filtros.tipo.toLowerCase()) : true) &&
+        (filtros.precoMin ? arranjo.preco >= parseFloat(filtros.precoMin) : true) &&
+        (filtros.precoMax ? arranjo.preco <= parseFloat(filtros.precoMax) : true)
+      );
+    });
+  };
+
+ 
+  const handleFiltroChange = (e) => {
+    const { name, value } = e.target;
+    setFiltros((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   return (
+    <main>
+      <div>
+        <h1>Filtros</h1>
+        <label>
+          Nome:
+          <input
+            type="text"
+            name="nome"
+            value={filtros.nome}
+            onChange={handleFiltroChange}
+            placeholder="Filtrar por nome"
+          />
+        </label>
+        <label>
+          Tipo:
+          <input
+            type="text"
+            name="tipo"
+            value={filtros.tipo}
+            onChange={handleFiltroChange}
+            placeholder="Filtrar por tipo"
+          />
+        </label>
+        <label>
+          Preço Mínimo:
+          <input
+            type="number"
+            name="precoMin"
+            value={filtros.precoMin}
+            onChange={handleFiltroChange}
+            placeholder="Filtrar por preço mínimo"
+          />
+        </label>
+        <label>
+          Preço Máximo:
+          <input
+            type="number"
+            name="precoMax"
+            value={filtros.precoMax}
+            onChange={handleFiltroChange}
+            placeholder="Filtrar por preço máximo"
+          />
+        </label>
+      </div>
 
-    <table>
-      <>
-    <Button variant="contained" onClick={()=> exportPDF()}>Gerar PDF</Button>
-  </>
-      <tr>
-        <td>Nome</td>
-        <td>E-mail</td>
-      </tr>
-      <body>
-      {usuarios.map((usuario) =>
-        <tr key={usuario.id}>
-          <td>{usuario.nome}</td>
-          <td>{usuario.email}</td>
-          <td>
-            <button onClick={() => deletar(usuario.id)} >Remover</button>
-          <Link to={'/alterar/' + usuario.id}>
-            <button>Alterar</button>
-          </Link>
-          </td>
-        </tr>
-      )}
-      </body>
-    </table>
+      <ListaProdutos produtos={filtrarArranjos()} />
+    </main>
   );
 }
