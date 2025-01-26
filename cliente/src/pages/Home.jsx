@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import ListaProdutos from "../components/ListaProdutos"; 
 
@@ -98,3 +99,22 @@ export default function Home() {
     </main>
   );
 }
+=======
+useEffect(() => {
+  const buscarArranjos = async () => {
+    try {
+      const resposta = await fetch("http://localhost:3000/arranjos");
+      if (resposta.ok) {
+        const dados = await resposta.json();
+        setArranjos(dados);
+      } else {
+        alert('Erro ao buscar os arranjos.');
+      }
+    } catch {
+      alert('Erro de conexão com o servidor.');
+    }
+  };
+
+  buscarArranjos();
+}, []);
+>>>>>>> 9758ae60ff2192a9b2f46832a01f757d874abe27
