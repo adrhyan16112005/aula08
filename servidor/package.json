@@ -11,12 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.21.1",
-    "servidor": "file:",
-    "react": "^18.0.0",
-  "react-dom": "^18.0.0",
-  "react-router-dom": "^6.0.0",
-  "vite": "^5.4.1"
-  }
+  "cors": "^2.8.5",
+  "express": "^4.21.1"
+}
 }
