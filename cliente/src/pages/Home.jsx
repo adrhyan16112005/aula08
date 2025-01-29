@@ -1,7 +1,5 @@
-<<<<<<< HEAD
 import { useEffect, useState } from "react";
-import ListaProdutos from "../components/ListaProdutos"; 
-
+ 
 export default function Home() {
   const [arranjos, setArranjos] = useState([]);
   const [filtros, setFiltros] = useState({
@@ -14,20 +12,24 @@ export default function Home() {
   useEffect(() => {
     const buscarArranjos = async () => {
       try {
-        const resposta = await fetch('http://localhost:3000/arranjos');
+        const resposta = await fetch('http://localhost:3000/arranjos', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
         if (resposta.ok) {
           const dados = await resposta.json();
           setArranjos(dados);
         } else {
-          alert('Erro ao buscar os arranjos.');
+          alert('Erro ao buscar os arranjos: ' + resposta.statusText);
         }
       } catch (err) {
-        alert('Erro de conexão com o servidor.');
+        alert('Erro de conexão com o servidor: ' + err.message);
       }
     };
     buscarArranjos();
   }, []);
-
 
   const filtrarArranjos = () => {
     return arranjos.filter((arranjo) => {
@@ -40,7 +42,6 @@ export default function Home() {
     });
   };
 
- 
   const handleFiltroChange = (e) => {
     const { name, value } = e.target;
     setFiltros((prev) => ({
@@ -99,22 +100,3 @@ export default function Home() {
     </main>
   );
 }
-=======
-useEffect(() => {
-  const buscarArranjos = async () => {
-    try {
-      const resposta = await fetch("http://localhost:3000/arranjos");
-      if (resposta.ok) {
-        const dados = await resposta.json();
-        setArranjos(dados);
-      } else {
-        alert('Erro ao buscar os arranjos.');
-      }
-    } catch {
-      alert('Erro de conexão com o servidor.');
-    }
-  };
-
-  buscarArranjos();
-}, []);
->>>>>>> 9758ae60ff2192a9b2f46832a01f757d874abe27
